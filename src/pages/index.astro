@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import Layout from "~/components/Layout.astro";
+
+const albums = await getCollection("albums");
+---
+
+<Layout title="Gallery">
+  <div class="my-16 text-center mx-8">
+    <!-- <div class="text-center">
+      <h1 class="text-3xl xl:text-6xl font-bold">Photo Gallery</h1>
+      <p class="text-lg xl:text-2xl my-4">A collection of my photos</p>
+    </div> -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-16">
+      {
+        albums.map((item) => (
+          <a href={`/gallery/${item.id}`} class="relative group transition-all">
+            <Image
+              src={item.data.cover}
+              alt={item.data.title}
+              width={720}
+              quality="max"
+              class="rounded-lg"
+            />
+            <div class="absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-center bg-gradient-to-b from-transparent from-10% hover:from-30% to-slate-900 to-90% hover:to-100% text-white transition-all px-4 hover:pt-4">
+              <strong class="text-xl font-semibold">{item.data.title}</strong>
+              {/* <p class="text-sm font-light italic">{item.data.description}</p> */}
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</Layout>
